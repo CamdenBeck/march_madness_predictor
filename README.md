@@ -158,3 +158,38 @@ The notebooks use common data science libraries, including:
 - `joblib`
 
 Installing those packages in a virtual environment before running the notebooks is recommended.
+
+## Model Performance and Simulation Results
+
+### Test-Set Performance
+
+On a held-out test set built from recent regular-season and tournament games, the XGBoost model achieves approximately:
+
+- Accuracy: 0.7836
+- Log loss: 0.4796
+- ROC AUC: 0.8461
+
+These metrics are computed in `machine_learning_model.ipynb` using `accuracy_score`, `log_loss`, and `roc_auc_score` from scikit-learn.
+
+### Bracket Simulation Summary
+
+Using the trained model, `matchup_simulation.ipynb` simulates the full NCAA tournament bracket for the latest season and a championship game score distribution.
+
+- Deterministic bracket champion: Arizona (Z01)
+- Championship matchup: Florida (X01) vs Arizona (Z01)
+- Simulated average final scores (10,000 simulations):
+	- Florida: 73.6 points
+	- Arizona: 76.5 points
+
+### Comparing Metrics and Simulation Outcomes
+
+- The test-set metrics indicate the model captures useful signal (ROC AUC ≈ 0.85) while maintaining reasonably well-calibrated probabilities (log loss ≈ 0.48).
+- The bracket simulation uses these probabilities to propagate uncertainty through the tournament, producing a plausible champion (Arizona as a 1‑seed) and a close projected championship scoreline (roughly 76–74 in favor of Arizona).
+- Together, the evaluation metrics and simulated bracket outcomes suggest the model is both statistically strong on historical data and qualitatively reasonable when translated into full-bracket predictions.
+
+## After the Tournament
+
+### Results
+
+- Applied to the 2026 March Madness tournament, the model correctly predicted 22 of 32 games in the first round and 11 of 16 games in the second round. As the tournament progressed and matchups became more competitive, performance declined: the simulated bracket selected 2 of the 4 Final Four teams correctly and missed both teams in the championship game.
+- In practice, this places the model in the range of a reasonable but not exceptional bracket. It is best used as an analytical tool for exploring scenarios and upset probabilities rather than as a fully automated bracket-picking system.
